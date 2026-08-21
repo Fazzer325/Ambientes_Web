@@ -112,6 +112,8 @@
                             </div>
                             <!-- endregion -->
 
+                            <br>
+                            <div id="total">Total:<span id="total">0</span></div>
 
                         </div>
 
@@ -147,11 +149,13 @@
 
        if (dominio.checked){
            total += parseInt(dominio.dataset.precio)
+           document.getElementById("total").textContent="Total: "+total
            console.log("dominio seleccionado, Total: "+total)
 
        }else{
            total -= parseInt(dominio.dataset.precio)
            console.log("dominio no seleccionado")
+           document.getElementById("total").textContent="Total: "+total
        }
    })
    //endregion
@@ -163,10 +167,12 @@
       if (hosting.checked){
           total += parseInt(hosting.dataset.precio)
           console.log("Hosting seleccionado, Total: "+total)
+          document.getElementById("total").textContent="Total: "+total
 
       }else{
           total -= parseInt(hosting.dataset.precio)
           console.log("Hosting no seleccionado")
+          document.getElementById("total").textContent="Total: "+total
       }
     })
     //endregion
@@ -177,10 +183,12 @@
        if (bd.checked){
            total += parseInt(bd.dataset.precio)
            console.log("BaseDatos seleccionado, Total: "+total)
+           document.getElementById("total").textContent="Total: "+total
 
        }else{
            total -= parseInt(bd.dataset.precio)
            console.log("BaseDatos no seleccionado")
+           document.getElementById("total").textContent="Total: "+total
        }
    })
    //endregion
@@ -191,10 +199,12 @@
        if (seo.checked){
            total += parseInt(seo.dataset.precio)
            console.log("SEO seleccionado, Total: "+total)
+           document.getElementById("total").textContent="Total: "+total
 
        }else{
            total -= parseInt(seo.dataset.precio)
            console.log("SEO no seleccionado")
+           document.getElementById("total").textContent="Total: "+total
        }
    })
     //endregion
