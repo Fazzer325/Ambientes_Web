@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador de sitio web</title>
+</head>
+
+<body>
+
+<main>
+
+    <header>
+        <h1>Cotizador de sitio web</h1>
+        <p>Completa el formulario para generar una cotización estimada.</p>
+    </header>
+
+    <section>
+
+        <form id="cotizador">
+
+                       <!-- region Cliente -->
+                        <div>
+                            <label for="cliente">Nombre del cliente</label>
+                            <br>
+                            <input
+                                    type="text"
+                                    class=""
+                                    id="cliente"
+                                    name="cliente"
+                                    placeholder=""
+                            >
+                        </div>
+                       <!-- endregion -->
+
+
+                        <br>
+
+                        <!-- region Paginas -->
+                        <div>
+                            <label for="paginas">Número de páginas</label>
+                            <br>
+                            <input
+                                    type="number"
+                                    id="Paginas"
+                                    name="paginas"
+                                    placeholder=""
+                                    min="1"
+                            >
+                            <p>Cada página tiene un costo de $2000 MXN.</p>
+                        </div>
+                        <!-- endregion -->
+
+                        <div>
+                            <h3>Servicios adicionales</h3>
+
+                            <!-- region Dominio -->
+                            <div>
+                                <input
+                                        type="checkbox"
+                                        id="Dominio"
+                                        name="servicios"
+                                        data-precio="1500"
+                                >
+                                <label for="dominio">Dominio</label>
+                                <span>$1500</span>
+                            </div>
+                            <!-- endregion -->
+
+                            <br>
+
+                            <!-- region Hosting -->
+                            <div>
+                                <input
+                                        type="checkbox"
+                                        id="Hosting"
+                                        name="servicios"
+                                        data-precio="600"
+                                >
+                                <label for="hosting">Hosting</label>
+                                <span>$600</span>
+                            </div>
+                            <!-- endregion -->
+
+                            <br>
+
+                            <!-- region BD -->
+                            <div>
+                                <input
+                                        type="checkbox"
+                                        id="BD"
+                                        name="servicios"
+                                        data-precio="7000"
+                                >
+                                <label for="baseDatos">Base de datos</label>
+                                <span>$7000</span>
+                            </div>
+                            <!-- endregion -->
+
+                            <br>
+
+                            <!-- region SEO -->
+                            <div>
+                                <input
+                                        type="checkbox"
+                                        id="SEO"
+                                        name="servicios"
+                                        data-precio="2000"
+                                >
+                                <label for="baseDatos">SEO</label>
+                                <span>$2000</span>
+                            </div>
+                            <!-- endregion -->
+
+                            <br>
+                            <div id="total">Total:<span id="total">0</span></div>
+
+                        </div>
+
+                        <br>
+
+                        <button type="submit">
+                            Calcular cotización
+                        </button>
+
+                        <button type="reset" >
+                            Limpiar
+                        </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+<script>
+   //region Var
+   const paginas = document.querySelector("#Paginas")
+   const dominio = document.querySelector("#Dominio")
+   const hosting = document.querySelector("#Hosting")
+   const bd = document.querySelector("#BD")
+   const seo = document.querySelector("#SEO")
+
+    var total = 0;
+   //endregion
+
+   //region Evento Click Dominio
+   dominio.addEventListener("click",function (){
+
+       if (dominio.checked){
+           total += parseInt(dominio.dataset.precio)
+           document.getElementById("total").textContent="Total: "+total
+           console.log("dominio seleccionado, Total: "+total)
+
+       }else{
+           total -= parseInt(dominio.dataset.precio)
+           console.log("dominio no seleccionado")
+           document.getElementById("total").textContent="Total: "+total
+       }
+   })
+   //endregion
+
+   //region Evento CLick Hosting
+
+    hosting.addEventListener("click",function (){
+
+      if (hosting.checked){
+          total += parseInt(hosting.dataset.precio)
+          console.log("Hosting seleccionado, Total: "+total)
+          document.getElementById("total").textContent="Total: "+total
+
+      }else{
+          total -= parseInt(hosting.dataset.precio)
+          console.log("Hosting no seleccionado")
+          document.getElementById("total").textContent="Total: "+total
+      }
+    })
+    //endregion
+
+   //region Evento Click BD
+   bd.addEventListener("click",function (){
+
+       if (bd.checked){
+           total += parseInt(bd.dataset.precio)
+           console.log("BaseDatos seleccionado, Total: "+total)
+           document.getElementById("total").textContent="Total: "+total
+
+       }else{
+           total -= parseInt(bd.dataset.precio)
+           console.log("BaseDatos no seleccionado")
+           document.getElementById("total").textContent="Total: "+total
+       }
+   })
+   //endregion
+
+   //region Evento Click SEO
+   seo.addEventListener("click",function (){
+
+       if (seo.checked){
+           total += parseInt(seo.dataset.precio)
+           console.log("SEO seleccionado, Total: "+total)
+           document.getElementById("total").textContent="Total: "+total
+
+       }else{
+           total -= parseInt(seo.dataset.precio)
+           console.log("SEO no seleccionado")
+           document.getElementById("total").textContent="Total: "+total
+       }
+   })
+    //endregion
+
+
+</script>
+
+
+</body>
+</html>
