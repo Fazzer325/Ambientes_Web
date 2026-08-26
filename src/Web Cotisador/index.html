@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotizador de sitio web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -113,7 +116,7 @@
                             <!-- endregion -->
 
                             <br>
-                            <div>Total:<span id="total">0</span></div>
+                            <div id="total">Total:<span id="total">0</span></div>
 
                         </div>
 
@@ -135,7 +138,7 @@
 
 <script>
    //region Var
-   document.querySelector("#Paginas");
+   const paginas = document.querySelector("#Paginas");
    const dominio = document.querySelector("#Dominio")
    const hosting = document.querySelector("#Hosting")
    const bd = document.querySelector("#BD")
@@ -143,6 +146,30 @@
    const reset = document.querySelector("#reset")
 
    let total = 0;
+   let totalPaginas = 0
+   //endregion
+
+   //region Click Paginas
+
+   paginas.addEventListener("change", function () {
+
+       let NtotalPaginas = parseInt(paginas.value)
+
+       if (NtotalPaginas > totalPaginas){
+           total += NtotalPaginas * 2000
+           actualizarTotal()
+       }
+       else{
+           total -= (1 + NtotalPaginas) * 2000
+           actualizarTotal()
+       }
+
+   })
+
+   paginas.addEventListener("click",function (){
+       totalPaginas = parseInt(paginas.value)
+   })
+
    //endregion
 
    //region Evento Click Dominio
@@ -150,13 +177,13 @@
 
        if (dominio.checked){
            total += parseInt(dominio.dataset.precio)
-           document.getElementById("total").textContent="Total: "+total
+           actualizarTotal()
            console.log("dominio seleccionado, Total: "+total)
 
        }else{
            total -= parseInt(dominio.dataset.precio)
            console.log("dominio no seleccionado")
-           document.getElementById("total").textContent="Total: "+total
+           actualizarTotal()
        }
    })
    //endregion
@@ -168,12 +195,12 @@
       if (hosting.checked){
           total += parseInt(hosting.dataset.precio)
           console.log("Hosting seleccionado, Total: "+total)
-          document.getElementById("total").textContent="Total: "+total
+          actualizarTotal()
 
       }else{
           total -= parseInt(hosting.dataset.precio)
           console.log("Hosting no seleccionado")
-          document.getElementById("total").textContent="Total: "+total
+          actualizarTotal()
       }
     })
     //endregion
@@ -184,12 +211,12 @@
        if (bd.checked){
            total += parseInt(bd.dataset.precio)
            console.log("BaseDatos seleccionado, Total: "+total)
-           document.getElementById("total").textContent="Total: "+total
+           actualizarTotal()
 
        }else{
            total -= parseInt(bd.dataset.precio)
            console.log("BaseDatos no seleccionado")
-           document.getElementById("total").textContent="Total: "+total
+           actualizarTotal()
        }
    })
    //endregion
@@ -200,12 +227,11 @@
        if (seo.checked){
            total += parseInt(seo.dataset.precio)
            console.log("SEO seleccionado, Total: "+total)
-           document.getElementById("total").textContent="Total: "+total
-
+           actualizarTotal()
        }else{
            total -= parseInt(seo.dataset.precio)
            console.log("SEO no seleccionado")
-           document.getElementById("total").textContent="Total: "+total
+           actualizarTotal()
        }
    })
     //endregion
@@ -213,8 +239,28 @@
    //region Evento Click Reset
    reset.addEventListener("click",function (){
        total = 0
-       document.getElementById("total").textContent="Total: "+total
+       actualizarTotal()
    })
+
+   //endregion
+
+   //region Actualizar Total
+
+   function actualizarTotal() {
+
+       document.getElementById("total").textContent="Total: "+total
+
+   }
+
+   function Paginas() {
+       let total = totalPaginas + totalServicios
+
+       document.getElementById("total").textContent =
+           "Total: $" + total + " MXN"
+
+       console.log("Total: " + total)
+       document.getElementById("total").textContent="Total: "+total
+   }
 
    //endregion
 
