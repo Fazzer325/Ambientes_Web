@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotizador de sitio web</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="Css/Barra.css">
 </head>
 
-<body>
+<body style="margin: 0">
+
+<div id="contenedor-barra"></div>
+
 
 <main>
 
@@ -266,6 +268,25 @@
 
 
 </script>
+
+<script>
+    fetch("./Barra.html")
+        .then(respuesta => {
+            if (!respuesta.ok) {
+                throw new Error("No se pudo cargar Barra.html");
+            }
+
+            return respuesta.text();
+        })
+        .then(contenido => {
+            document.getElementById("contenedor-barra").innerHTML = contenido;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+</body>
 
 </body>
 </html>
