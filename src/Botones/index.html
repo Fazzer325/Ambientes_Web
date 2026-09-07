@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botones naranjas</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #fff8f2;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Flexbox para acomodar y centrar los botones. */
+        .contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .boton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            background-color: #00c0d9;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 8px 20px #d94b0033;
+        }
+
+        /* Border-radius cambia las esquinas como en las referencias. */
+        .boton1 {
+            border-radius: 16px;
+        }
+
+        .boton2 {
+            border-radius: 60px;
+        }
+
+        .boton3 {
+            border-radius: 50%;
+        }
+
+        .boton4 {
+            border-radius: 24px 70px;
+        }
+
+        .boton5 {
+            border-radius: 0 80px;
+        }
+
+        .boton:hover {
+            background-color: #bf4100;
+        }
+
+        .boton:focus-visible {
+            outline: 3px solid #743000;
+            outline-offset: 6px;
+        }
+    </style>
+</head>
+<body>
+    <main class="contenedor">
+        <a class="boton boton1" href="https://www.youtube.com/" aria-label="Botón 1: YouTube">Botón 1</a>
+        <a class="boton boton2" href="https://www.google.com/" aria-label="Botón 2: Google">Botón 2</a>
+        <a class="boton boton3" href="https://es.wikipedia.org/" aria-label="Botón 3: Wikipedia">Botón 3</a>
+        <a class="boton boton4" href="https://open.spotify.com/" aria-label="Botón 4: Spotify">Botón 4</a>
+        <a class="boton boton5" href="https://www.netflix.com/" aria-label="Botón 5: Netflix">Botón 5</a>
+    </main>
+</body>
+</html>
