@@ -22,15 +22,6 @@ body {
     margin: 0 auto;
 }
 
-.etiqueta-proyecto,
-.etiqueta-resultado {
-    display: block;
-    color: #2f68e9;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-}
-
 .encabezado-cotizador h1 {
     margin: 10px 0 14px;
     color: #14213d;
@@ -68,6 +59,18 @@ body {
 
 .panel-resultado {
     background-color: #eaf2ff;
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.panel-resultado img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+
 }
 
 .campo-formulario {
@@ -134,11 +137,18 @@ body {
     font-weight: 700;
 }
 
+.servicio #Cupon{
+    height: 30px;
+    width: 100%;
+}
+
 .acciones-formulario {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
+
 
 .acciones-formulario button {
     width: 100%;
@@ -169,18 +179,6 @@ body {
     color: #51617a;
 }
 
-.panel-resultado h2 {
-    margin: 6px 0 18px;
-    color: #14213d;
-    font-size: 26px;
-}
-
-.panel-resultado p {
-    margin: 0;
-    color: #44546f;
-    font-size: 16px;
-    line-height: 1.5;
-}
 
 #total {
     margin-top: 32px;
@@ -204,4 +202,130 @@ body {
     .cotizador-layout {
         flex-direction: column;
     }
+}
+
+/*--------------------------------------------------------- POP UP----------------------------  -----------------------*/
+#popupCotizacion {
+    width: 400px;
+    border: none;
+    border-radius: 15px;
+    padding: 0;
+}
+
+#popupCotizacion::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-contenido {
+    padding: 30px;
+}
+
+.popup-contenido h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.datos-cotizacion {
+    margin-bottom: 25px;
+}
+
+.datos-cotizacion p {
+    font-size: 18px;
+    margin: 12px 0;
+}
+
+.total {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+}
+
+.popup-contenido button {
+    width: 100%;
+    padding: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #4f65e8;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.popup-contenido button:hover {
+    background: #3e52cc;
+}
+
+
+#popupCotizacion {
+    width: 400px;
+    max-width: 90%;
+    border: none;
+    border-radius: 15px;
+    padding: 0;
+}
+
+#popupCotizacion::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-contenido {
+    padding: 30px;
+}
+
+.popup-contenido h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.datos-cotizacion p {
+    font-size: 18px;
+    margin: 12px 0;
+}
+
+.total {
+    margin-top: 25px;
+    padding: 20px 0;
+
+    border-top: 1px solid #ddd;
+
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.popup-contenido button {
+    width: 100%;
+    padding: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #4f65e8;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.popup-contenido button:hover {
+    background: #3f54cf;
+}
+
+#EasterEgg{
+    display: flex;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
 }

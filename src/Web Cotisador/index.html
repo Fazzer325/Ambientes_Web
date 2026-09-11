@@ -2,181 +2,136 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotizador de sitio web</title>
-
     <link rel="stylesheet" href="Css/Barra.css">
     <link rel="stylesheet" href="Css/index.css">
 </head>
 
 <body>
+<nav id="Barra">
+
+    <div id="Izq">
+        <span><a href="">MY PAGINA</a></span>
+    </div>
+
+    <div id="Cent" STYLE="display: flex">
+        <span><a href=""> Projects </a></span>
+        <span><a href=""> Servicios </a></span>
+        <span><a href=""> About </a></span>
+    </div>
+
+    <div id="Der">
+        <span><a href="">Contacto </a></span>
+    </div>
+</nav>
 
 <div id="contenedor-barra"></div>
 
-
 <main class="pagina-cotizador">
-
     <header class="encabezado-cotizador">
-        <span class="etiqueta-proyecto">PROYECTO INTRODUCTORIO</span>
         <h1>Cotizador de sitio web</h1>
         <p>Completa el formulario para generar una cotización estimada.</p>
     </header>
 
     <section class="cotizador-layout">
         <form id="cotizador" class="panel-formulario">
-            <!-- region Cliente -->
+
+            <!-- CLIENTE -->
             <div class="campo-formulario">
                 <label for="cliente">Nombre del cliente</label>
-                <input
-                        type="text"
-                        id="cliente"
-                        name="cliente"
-                        placeholder="Ej. Ana López"
-                >
+                <input type="text" id="cliente" name="cliente" placeholder="Ej. Ana López" required>
             </div>
-            <!-- endregion -->
 
-            <!-- region Páginas -->
+            <!-- PAGINAS -->
             <div class="campo-formulario">
                 <label for="Paginas">Número de páginas</label>
-                <input
-                        type="number"
-                        id="Paginas"
-                        name="paginas"
-                        placeholder="Ej. 5"
-                        min="1"
-                >
-                <p class="texto-ayuda">Las primeras 3 páginas están incluidas. Cada página adicional cuesta $2000 MXN.</p>
+                <input type="number" id="Paginas" name="paginas" placeholder="Ej. 5" min="1" step="1" required>
+                <p class="texto-ayuda">Las primeras 3 páginas están incluidas por 5000 $. Cada página adicional cuesta $2000 MXN.</p>
             </div>
-            <!-- endregion -->
 
+            <!-- SERVICIOS -->
             <div class="servicios-adicionales">
                 <h3>Servicios adicionales</h3>
 
-                <!-- region Dominio -->
                 <div class="servicio">
-                    <input
-                            type="checkbox"
-                            id="Dominio"
-                            name="servicios"
-                            data-precio="1500"
-                    >
+                    <input type="checkbox" id="Dominio" name="servicios" data-precio="1500">
                     <label for="Dominio">Dominio</label>
                     <span>$1500</span>
                 </div>
-                <!-- endregion -->
 
-                <!-- region Hosting -->
                 <div class="servicio">
-                    <input
-                            type="checkbox"
-                            id="Hosting"
-                            name="servicios"
-                            data-precio="600"
-                    >
+                    <input type="checkbox" id="Hosting" name="servicios" data-precio="600">
                     <label for="Hosting">Hosting</label>
                     <span>$600</span>
                 </div>
-                <!-- endregion -->
 
-                <!-- region BD -->
                 <div class="servicio">
-                    <input
-                            type="checkbox"
-                            id="BD"
-                            name="servicios"
-                            data-precio="7000"
-                    >
+                    <input type="checkbox" id="BD" name="servicios" data-precio="7000">
                     <label for="BD">Base de datos</label>
                     <span>$7000</span>
                 </div>
-                <!-- endregion -->
 
-                <!-- region SEO -->
                 <div class="servicio">
-                    <input
-                            type="checkbox"
-                            id="SEO"
-                            name="servicios"
-                            data-precio="2000"
-                    >
+                    <input type="checkbox" id="SEO" name="servicios" data-precio="2000">
                     <label for="SEO">SEO</label>
                     <span>$2000</span>
                 </div>
-                <!-- endregion -->
+
+                <div class="servicio">
+                    <label for="Cupon">Cupon</label>
+                    <input type="text" id="Cupon" name="Cupon">
+                </div>
             </div>
 
+            <!-- BOTONES -->
             <div class="acciones-formulario">
                 <button type="submit">Calcular cotización</button>
                 <button type="reset" id="reset">Limpiar</button>
             </div>
         </form>
 
+        <!-- IMAGEN -->
         <aside class="panel-resultado">
-            <span class="etiqueta-resultado">RESULTADO</span>
-            <h2>Resumen de cotización</h2>
-            <p>Ingresa los datos del cliente y selecciona los servicios.</p>
-            <div id="total">Total: $0 MXN</div>
+            <img src="Imagenes/0.png" alt="Tamaños de sitios web" id="Imagen">
         </aside>
     </section>
 
+
+    <!-- POPUP -->
+    <dialog id="popupCotizacion">
+        <div class="popup-contenido">
+            <h2>Cotización</h2>
+
+            <div class="datos-cotizacion">
+                <p>
+                    <strong>Cliente:</strong>
+                    <span id="popupCliente"></span>
+                </p>
+
+                <p>
+                    <strong>Páginas:</strong>
+                    <span id="popupPaginas"></span>
+                </p>
+
+                <div id="popupPaginasExtra"></div>
+                <div id="popupServicios"></div>
+                <div id="CuponDescuento"></div>
+                <span>IVA: 16%</span>
+            </div>
+
+            <div class="total">
+                TOTAL: <span id="popupTotal"></span>
+            </div>
+
+            <button type="button" onclick="cerrarPopup()">Cerrar</button>
+        </div>
+    </dialog>
+
+
+    <button type="button" id="EasterEgg"></button>
 </main>
 
-<script>
-    const paginas = document.querySelector("#Paginas");
-    const dominio = document.querySelector("#Dominio");
-    const hosting = document.querySelector("#Hosting");
-    const bd = document.querySelector("#BD");
-    const seo = document.querySelector("#SEO");
-    const reset = document.querySelector("#reset");
-    const servicios = [dominio, hosting, bd, seo];
-
-    function calcularTotal() {
-        const numeroPaginas = Math.max(0, parseInt(paginas.value, 10) || 0);
-        const totalPaginas = Math.max(0, numeroPaginas - 3) * 2000;
-        const totalServicios = servicios.reduce(function (suma, servicio) {
-            return suma + (servicio.checked ? parseInt(servicio.dataset.precio, 10) : 0);
-        }, 0);
-
-        return totalPaginas + totalServicios;
-    }
-
-    function mostrarTotal(total) {
-        document.getElementById("total").textContent = "Total: $" + total + " MXN";
-    }
-
-    function actualizarTotal() {
-        mostrarTotal(calcularTotal());
-    }
-
-    paginas.addEventListener("input", actualizarTotal);
-    paginas.addEventListener("change", actualizarTotal);
-
-    servicios.forEach(function (servicio) {
-        servicio.addEventListener("click", actualizarTotal);
-    });
-
-    reset.addEventListener("click", function () {
-        mostrarTotal(0);
-    });
-</script>
-
-<script>
-    fetch("./Barra.html")
-        .then(respuesta => {
-            if (!respuesta.ok) {
-                throw new Error("No se pudo cargar Barra.html");
-            }
-
-            return respuesta.text();
-        })
-        .then(contenido => {
-            document.getElementById("contenedor-barra").innerHTML = contenido;
-        })
-        .catch(error => {
-            console.error(error);
-        });
-</script>
+<script src="Js/index.js"></script>
 
 </body>
 </html>
