@@ -2,216 +2,136 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotizador de sitio web</title>
+    <link rel="stylesheet" href="Css/Barra.css">
+    <link rel="stylesheet" href="Css/index.css">
 </head>
 
 <body>
+<nav id="Barra">
 
-<main>
+    <div id="Izq">
+        <span><a href="">MY PAGINA</a></span>
+    </div>
 
-    <header>
+    <div id="Cent" STYLE="display: flex">
+        <span><a href=""> Projects </a></span>
+        <span><a href=""> Servicios </a></span>
+        <span><a href=""> About </a></span>
+    </div>
+
+    <div id="Der">
+        <span><a href="">Contacto </a></span>
+    </div>
+</nav>
+
+<div id="contenedor-barra"></div>
+
+<main class="pagina-cotizador">
+    <header class="encabezado-cotizador">
         <h1>Cotizador de sitio web</h1>
         <p>Completa el formulario para generar una cotización estimada.</p>
     </header>
 
-    <section>
+    <section class="cotizador-layout">
+        <form id="cotizador" class="panel-formulario">
 
-        <form id="cotizador">
+            <!-- CLIENTE -->
+            <div class="campo-formulario">
+                <label for="cliente">Nombre del cliente</label>
+                <input type="text" id="cliente" name="cliente" placeholder="Ej. Ana López" required>
+            </div>
 
-                       <!-- region Cliente -->
-                        <div>
-                            <label for="cliente">Nombre del cliente</label>
-                            <br>
-                            <input
-                                    type="text"
-                                    class=""
-                                    id="cliente"
-                                    name="cliente"
-                                    placeholder=""
-                            >
-                        </div>
-                       <!-- endregion -->
+            <!-- PAGINAS -->
+            <div class="campo-formulario">
+                <label for="Paginas">Número de páginas</label>
+                <input type="number" id="Paginas" name="paginas" placeholder="Ej. 5" min="1" step="1" required>
+                <p class="texto-ayuda">Las primeras 3 páginas están incluidas por 5000 $. Cada página adicional cuesta $2000 MXN.</p>
+            </div>
 
+            <!-- SERVICIOS -->
+            <div class="servicios-adicionales">
+                <h3>Servicios adicionales</h3>
 
-                        <br>
+                <div class="servicio">
+                    <input type="checkbox" id="Dominio" name="servicios" data-precio="1500">
+                    <label for="Dominio">Dominio</label>
+                    <span>$1500</span>
+                </div>
 
-                        <!-- region Paginas -->
-                        <div>
-                            <label for="paginas">Número de páginas</label>
-                            <br>
-                            <input
-                                    type="number"
-                                    id="Paginas"
-                                    name="paginas"
-                                    placeholder=""
-                                    min="1"
-                            >
-                            <p>Cada página tiene un costo de $2000 MXN.</p>
-                        </div>
-                        <!-- endregion -->
+                <div class="servicio">
+                    <input type="checkbox" id="Hosting" name="servicios" data-precio="600">
+                    <label for="Hosting">Hosting</label>
+                    <span>$600</span>
+                </div>
 
-                        <div>
-                            <h3>Servicios adicionales</h3>
+                <div class="servicio">
+                    <input type="checkbox" id="BD" name="servicios" data-precio="7000">
+                    <label for="BD">Base de datos</label>
+                    <span>$7000</span>
+                </div>
 
-                            <!-- region Dominio -->
-                            <div>
-                                <input
-                                        type="checkbox"
-                                        id="Dominio"
-                                        name="servicios"
-                                        data-precio="1500"
-                                >
-                                <label for="dominio">Dominio</label>
-                                <span>$1500</span>
-                            </div>
-                            <!-- endregion -->
+                <div class="servicio">
+                    <input type="checkbox" id="SEO" name="servicios" data-precio="2000">
+                    <label for="SEO">SEO</label>
+                    <span>$2000</span>
+                </div>
 
-                            <br>
+                <div class="servicio">
+                    <label for="Cupon">Cupon</label>
+                    <input type="text" id="Cupon" name="Cupon">
+                </div>
+            </div>
 
-                            <!-- region Hosting -->
-                            <div>
-                                <input
-                                        type="checkbox"
-                                        id="Hosting"
-                                        name="servicios"
-                                        data-precio="600"
-                                >
-                                <label for="hosting">Hosting</label>
-                                <span>$600</span>
-                            </div>
-                            <!-- endregion -->
-
-                            <br>
-
-                            <!-- region BD -->
-                            <div>
-                                <input
-                                        type="checkbox"
-                                        id="BD"
-                                        name="servicios"
-                                        data-precio="7000"
-                                >
-                                <label for="baseDatos">Base de datos</label>
-                                <span>$7000</span>
-                            </div>
-                            <!-- endregion -->
-
-                            <br>
-
-                            <!-- region SEO -->
-                            <div>
-                                <input
-                                        type="checkbox"
-                                        id="SEO"
-                                        name="servicios"
-                                        data-precio="2000"
-                                >
-                                <label for="baseDatos">SEO</label>
-                                <span>$2000</span>
-                            </div>
-                            <!-- endregion -->
-
-                            <br>
-                            <div id="total">Total:<span id="total">0</span></div>
-
-                        </div>
-
-                        <br>
-
-                        <button type="submit">
-                            Calcular cotización
-                        </button>
-
-                        <button type="reset" >
-                            Limpiar
-                        </button>
-
+            <!-- BOTONES -->
+            <div class="acciones-formulario">
+                <button type="submit">Calcular cotización</button>
+                <button type="reset" id="reset">Limpiar</button>
+            </div>
         </form>
 
+        <!-- IMAGEN -->
+        <aside class="panel-resultado">
+            <img src="Imagenes/0.png" alt="Tamaños de sitios web" id="Imagen">
+        </aside>
     </section>
 
+
+    <!-- POPUP -->
+    <dialog id="popupCotizacion">
+        <div class="popup-contenido">
+            <h2>Cotización</h2>
+
+            <div class="datos-cotizacion">
+                <p>
+                    <strong>Cliente:</strong>
+                    <span id="popupCliente"></span>
+                </p>
+
+                <p>
+                    <strong>Páginas:</strong>
+                    <span id="popupPaginas"></span>
+                </p>
+
+                <div id="popupPaginasExtra"></div>
+                <div id="popupServicios"></div>
+                <div id="CuponDescuento"></div>
+                <span>IVA: 16%</span>
+            </div>
+
+            <div class="total">
+                TOTAL: <span id="popupTotal"></span>
+            </div>
+
+            <button type="button" onclick="cerrarPopup()">Cerrar</button>
+        </div>
+    </dialog>
+
+
+    <button type="button" id="EasterEgg"></button>
 </main>
 
-<script>
-   //region Var
-   const paginas = document.querySelector("#Paginas")
-   const dominio = document.querySelector("#Dominio")
-   const hosting = document.querySelector("#Hosting")
-   const bd = document.querySelector("#BD")
-   const seo = document.querySelector("#SEO")
-
-    var total = 0;
-   //endregion
-
-   //region Evento Click Dominio
-   dominio.addEventListener("click",function (){
-
-       if (dominio.checked){
-           total += parseInt(dominio.dataset.precio)
-           document.getElementById("total").textContent="Total: "+total
-           console.log("dominio seleccionado, Total: "+total)
-
-       }else{
-           total -= parseInt(dominio.dataset.precio)
-           console.log("dominio no seleccionado")
-           document.getElementById("total").textContent="Total: "+total
-       }
-   })
-   //endregion
-
-   //region Evento CLick Hosting
-
-    hosting.addEventListener("click",function (){
-
-      if (hosting.checked){
-          total += parseInt(hosting.dataset.precio)
-          console.log("Hosting seleccionado, Total: "+total)
-          document.getElementById("total").textContent="Total: "+total
-
-      }else{
-          total -= parseInt(hosting.dataset.precio)
-          console.log("Hosting no seleccionado")
-          document.getElementById("total").textContent="Total: "+total
-      }
-    })
-    //endregion
-
-   //region Evento Click BD
-   bd.addEventListener("click",function (){
-
-       if (bd.checked){
-           total += parseInt(bd.dataset.precio)
-           console.log("BaseDatos seleccionado, Total: "+total)
-           document.getElementById("total").textContent="Total: "+total
-
-       }else{
-           total -= parseInt(bd.dataset.precio)
-           console.log("BaseDatos no seleccionado")
-           document.getElementById("total").textContent="Total: "+total
-       }
-   })
-   //endregion
-
-   //region Evento Click SEO
-   seo.addEventListener("click",function (){
-
-       if (seo.checked){
-           total += parseInt(seo.dataset.precio)
-           console.log("SEO seleccionado, Total: "+total)
-           document.getElementById("total").textContent="Total: "+total
-
-       }else{
-           total -= parseInt(seo.dataset.precio)
-           console.log("SEO no seleccionado")
-           document.getElementById("total").textContent="Total: "+total
-       }
-   })
-    //endregion
-
-
-</script>
-
+<script src="Js/index.js"></script>
 
 </body>
 </html>

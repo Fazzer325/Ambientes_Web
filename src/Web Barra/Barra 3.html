@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bar</title>
+</head>
+<body style="margin: 0">
+
+
+<div id="Barra">
+
+
+                <div id="Izq">
+                    <span><a href="">MY PAGINA</a></span>
+                </div>
+
+                <div id="Cent" STYLE="display: flex">
+                    <span><a href=""> Projects </a></span>
+                    <span><a href=""> Servicios </a></span>
+                    <span><a href=""> About </a></span>
+                </div>
+
+                <div id="Der">
+                    <span><a href="">Contacto </a></span>
+                </div>
+
+
+
+</div>
+
+
+<style>
+
+    #Barra {
+        background-color: darkcyan;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        border-bottom: 5px solid #749ff8;
+    }
+
+    /* Todos los enlaces */
+    #Barra a {
+        text-decoration: none;
+        font-size: 25px;
+        color: aliceblue;
+    }
+
+    /* Projects, Servicios y About */
+    #Cent {
+        display: flex;
+        order: 1;
+        margin-left: 30px;
+    }
+
+    #Cent span {
+        margin-right: 25px;
+    }
+
+    /* Contacto */
+    #Der {
+        order: 2;
+    }
+
+    #Der a {
+        display: inline-block;
+        background-color: #3167cf;
+        padding: 8px 18px;
+        border-radius: 20px;
+    }
+
+    /* MY PAGINA */
+    #Izq {
+        order: 3;
+        margin-left: auto;
+        margin-right: 30px;
+    }
+
+
+
+</style>
+
+</body>
+</html>
