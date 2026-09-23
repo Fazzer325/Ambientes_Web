@@ -71,3 +71,34 @@ test('normalizeWeather rejects incomplete API responses', () => {
     /respuesta meteorológica incompleta/i
   );
 });
+
+test('normalizeWeather rejects missing and null measurements instead of returning NaN', () => {
+  const baseResponse = {
+    current: {
+      time: '2026-09-23T08:15',
+      temperature_2m: 18.4,
+      relative_humidity_2m: 71,
+      apparent_temperature: 18.1,
+      is_day: 1,
+      weather_code: 2,
+      wind_speed_10m: 9.7
+    },
+    daily: {
+      temperature_2m_max: [25.8],
+      temperature_2m_min: [13.2],
+      sunrise: ['2026-09-23T06:26'],
+      sunset: ['2026-09-23T18:32']
+    }
+  };
+
+  const invalidResponses = [
+    { ...baseResponse, current: { ...baseResponse.current, temperature_2m: undefined } },
+    { ...baseResponse, current: { ...baseResponse.current, relative_humidity_2m: null } },
+    { ...baseResponse, daily: { ...baseResponse.daily, temperature_2m_max: [] } },
+    { ...baseResponse, daily: { ...baseResponse.daily, sunrise: [] } }
+  ];
+
+  for (const response of invalidResponses) {
+    assert.throws(() => weather.normalizeWeather(response), /respuesta meteorológica incompleta/i);
+  }
+});

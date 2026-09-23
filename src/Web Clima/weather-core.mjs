@@ -59,11 +59,43 @@ function localTime(isoValue) {
   return isoValue.split('T')[1].slice(0, 5);
 }
 
+function hasFiniteMeasurements(values) {
+  return values.every((value) => typeof value === 'number' && Number.isFinite(value));
+}
+
+function hasIsoTime(value) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value);
+}
+
 export function normalizeWeather(response) {
   const current = response?.current;
   const daily = response?.daily;
 
-  if (!current || !daily || !Array.isArray(daily.temperature_2m_max)) {
+  const measurements = current && daily ? [
+    current.temperature_2m,
+    current.relative_humidity_2m,
+    current.apparent_temperature,
+    current.is_day,
+    current.weather_code,
+    current.wind_speed_10m,
+    daily.temperature_2m_max?.[0],
+    daily.temperature_2m_min?.[0]
+  ] : [];
+
+  const times = current && daily ? [
+    current.time,
+    daily.sunrise?.[0],
+    daily.sunset?.[0]
+  ] : [];
+
+  if (
+    !current ||
+    !daily ||
+    measurements.length === 0 ||
+    !hasFiniteMeasurements(measurements) ||
+    times.length === 0 ||
+    !times.every(hasIsoTime)
+  ) {
     throw new Error('Respuesta meteorológica incompleta');
   }
 

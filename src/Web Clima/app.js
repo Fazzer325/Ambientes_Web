@@ -74,7 +74,7 @@ function renderCity(city) {
     }).format(new Date()));
 }
 
-function renderWeather(weather) {
+function renderWeather(weather, city) {
     elements.temperature.textContent = weather.temperature;
     elements.condition.textContent = weather.condition;
     elements.highLow.textContent = `Máx. ${weather.high}° · Mín. ${weather.low}°`;
@@ -85,13 +85,28 @@ function renderWeather(weather) {
     elements.sunset.textContent = weather.sunset;
     elements.timezone.textContent = weather.timezone;
     elements.updated.textContent = `Observado a las ${weather.observedAt}`;
-    elements.status.textContent = `Datos actualizados · ${weather.condition}`;
+    elements.status.textContent = `${city.name}: ${weather.temperature}°, ${weather.condition}. Datos actualizados.`;
     renderIcon(weather.icon);
+}
+
+function resetWeatherFields() {
+    elements.temperature.textContent = '--';
+    elements.condition.textContent = 'Consultando atmósfera…';
+    elements.highLow.textContent = 'Máx. --° · Mín. --°';
+    elements.feelsLike.textContent = '--°';
+    elements.humidity.textContent = '--%';
+    elements.wind.innerHTML = '-- <small>km/h</small>';
+    elements.sunrise.textContent = '--:--';
+    elements.sunset.textContent = '--:--';
+    elements.timezone.textContent = '---';
+    elements.updated.textContent = 'Esperando datos…';
+    renderIcon('cloud');
 }
 
 function renderLoading(city) {
     elements.stage.dataset.state = 'loading';
     elements.refresh.disabled = true;
+    resetWeatherFields();
     elements.status.textContent = `Consultando el cielo de ${city.name}…`;
     renderCity(city);
 }
@@ -116,7 +131,7 @@ async function loadWeather() {
         const response = await fetch(buildForecastUrl(city), { signal: request.signal });
         if (!response.ok) throw new Error(`Open-Meteo respondió con ${response.status}`);
 
-        renderWeather(normalizeWeather(await response.json()));
+        renderWeather(normalizeWeather(await response.json()), city);
         elements.stage.dataset.state = 'ready';
     } catch (error) {
         if (error.name !== 'AbortError') renderError();
