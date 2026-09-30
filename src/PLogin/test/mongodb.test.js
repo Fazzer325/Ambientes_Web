@@ -141,3 +141,33 @@ test('cerrar permite crear una conexión nueva', async () => {
   assert.equal(firstClient.closeCalls, 1);
   assert.equal(secondClient.connectCalls, 1);
 });
+
+test('descarta una conexión pendiente que fue cerrada', async () => {
+  let releaseConnection;
+  const pendingClient = createFakeClient({
+    waitForConnect: () => new Promise((resolve) => {
+      releaseConnection = resolve;
+    }),
+  });
+
+  const pendingConnection = connectToDatabase(config, {
+    clientFactory: () => pendingClient,
+  });
+
+  await closeDatabaseConnection();
+  releaseConnection();
+
+  await assert.rejects(
+    pendingConnection,
+    /se cerró antes de completarse/,
+  );
+  assert.equal(pendingClient.closeCalls, 1);
+
+  const freshClient = createFakeClient();
+  const database = await connectToDatabase(config, {
+    clientFactory: () => freshClient,
+  });
+
+  assert.equal(database.databaseName, 'plogin');
+  assert.equal(freshClient.connectCalls, 1);
+});

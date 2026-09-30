@@ -26,19 +26,28 @@ export function connectToDatabase(
   connectionPromise = (async () => {
     try {
       await client.connect();
+
+      if (activeClient !== client) {
+        throw new Error(
+          'La conexión de MongoDB se cerró antes de completarse.',
+        );
+      }
+
       activeDatabase = client.db(config.databaseName);
       return activeDatabase;
     } catch (error) {
-      if (activeClient === client) {
+      const ownsActiveConnection = activeClient === client;
+
+      if (ownsActiveConnection) {
         activeClient = undefined;
         activeDatabase = undefined;
         connectionPromise = undefined;
-      }
 
-      try {
-        await client.close();
-      } catch {
-        // El error de conexión original conserva la causa útil.
+        try {
+          await client.close();
+        } catch {
+          // El error de conexión original conserva la causa útil.
+        }
       }
 
       throw error;

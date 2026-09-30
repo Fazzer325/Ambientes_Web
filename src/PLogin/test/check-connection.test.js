@@ -48,7 +48,7 @@ test('comprueba Atlas con ping y reporta la base conectada', async () => {
 });
 
 test('oculta la URI cuando falla la conexión y siempre cierra', async () => {
-  const secretUri = 'mongodb+srv://usuario:secreto@example.test/';
+  const secretUri = 'mongodb://usuario:secreto@example.test/';
   const logger = createLogger();
   let closeCalls = 0;
 
