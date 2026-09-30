@@ -8,6 +8,7 @@
     "node": ">=20.19.0"
   },
   "scripts": {
+    "start": "node iniciar-conexion.js",
     "test": "node --test",
     "db:check": "node src/check-connection.js"
   },

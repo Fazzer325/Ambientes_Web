@@ -15,6 +15,12 @@ export function readDatabaseConfig(environment = process.env) {
     );
   }
 
+  if (!uri.startsWith('mongodb+srv://') && !uri.startsWith('mongodb://')) {
+    throw new DatabaseConfigurationError(
+      'MONGODB_URI debe comenzar con mongodb+srv:// o mongodb://.',
+    );
+  }
+
   if (!databaseName) {
     throw new DatabaseConfigurationError(
       'Falta la variable de entorno MONGODB_DB_NAME.',

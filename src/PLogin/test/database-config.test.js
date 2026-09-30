@@ -18,6 +18,25 @@ test('normaliza una configuración completa de MongoDB', () => {
   });
 });
 
+for (const value of ['cris', 'https://example.test']) {
+  test(`rechaza una URI que no usa el protocolo de MongoDB (${value})`, () => {
+    assert.throws(
+      () => readDatabaseConfig({
+        MONGODB_URI: value,
+        MONGODB_DB_NAME: 'plogin',
+      }),
+      (error) => {
+        assert.ok(error instanceof DatabaseConfigurationError);
+        assert.equal(
+          error.message,
+          'MONGODB_URI debe comenzar con mongodb+srv:// o mongodb://.',
+        );
+        return true;
+      },
+    );
+  });
+}
+
 for (const value of [undefined, '', '   ']) {
   test(`rechaza MONGODB_URI sin contenido (${JSON.stringify(value)})`, () => {
     assert.throws(
