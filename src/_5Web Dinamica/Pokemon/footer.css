@@ -1,0 +1,146 @@
+.footer,
+input,
+button {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    padding: 20px 16px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 28px;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+header a:hover,
+header a:focus-visible {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+    margin: 40px 16px 24px;
+    text-align: center;
+}
+
+form,
+.resultado {
+    box-sizing: border-box;
+    width: min(440px, calc(100% - 32px));
+    margin: 0 auto 40px;
+    padding: 32px;
+    background: #fff;
+    color: #333;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.resultado h2 {
+    margin-top: 0;
+}
+
+.resultado p {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.volver {
+    display: block;
+    margin-top: 24px;
+    padding: 14px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.volver:hover {
+    filter: brightness(1.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font: inherit;
+}
+
+input:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+form br {
+    display: none;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+.footer {
+    margin-top: auto;
+    padding: 24px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.pokemon-imagen {
+    display: block;
+    width: 160px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 20px;
+    image-rendering: pixelated;
+}
