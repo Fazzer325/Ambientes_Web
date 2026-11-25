@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#10131f">
+    <title>Pong 1 vs 1</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background-color: #10131f;
+            margin: 0;
+            padding: 8px;
+            color: white;
+            font-family: sans-serif;
+            flex-direction: column;
+            overscroll-behavior: none;
+        }
+        h2 {
+            margin: 0 0 10px;
+        }
+        /* El tablero se ajusta al ancho y al alto disponibles manteniendo 16:9 */
+        .tablero {
+            width: min(800px, 100%, calc((100dvh - 110px) * 16 / 9));
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #152961 100%);
+            border: 3px solid #f5f5f5;
+            border-radius: 6px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+            touch-action: none;     /* Arrastrar el dedo mueve la paleta, no la página */
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: pointer;
+        }
+        kbd {
+            background: #2d3348;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 1px 6px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Barra debajo del tablero */
+        .barra {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            width: min(800px, 100%, calc((100dvh - 110px) * 16 / 9));
+            margin-top: 8px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        .barra p {
+            margin: 0;
+        }
+        .barra .acciones {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .barra button {
+            white-space: nowrap;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        #avisoJuego {
+            color: #feca57;
+        }
+
+        /* Pantallas: ventanas que cubren toda la vista (funcionan igual en celular) */
+        .pantalla {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(10, 14, 25, 0.86);
+            padding: 12px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+        .oculto {
+            display: none !important;
+        }
+        .caja {
+            background: #171c2e;
+            border: 1px solid #2d3348;
+            border-radius: 10px;
+            padding: 20px;
+            width: min(640px, 100%);
+            max-height: 100%;
+            overflow-y: auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .caja h3 {
+            margin: 0;
+            font-size: 26px;
+        }
+        .columnas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            text-align: left;
+        }
+        .tarjeta {
+            background: #1f2540;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tarjeta h4 {
+            margin: 0;
+            color: #2ecc71;
+        }
+        label {
+            font-size: 14px;
+            color: #ccc;
+            text-align: left;
+        }
+        input,
+        select {
+            padding: 9px;
+            font-size: 16px;      /* 16px evita que el celular haga zoom al escribir */
+            border-radius: 6px;
+            border: 1px solid #555;
+            background: #10131f;
+            color: #fff;
+            width: 100%;
+        }
+        input[type="color"] {
+            padding: 2px;
+            height: 38px;
+            cursor: pointer;
+        }
+        #codigoUnirse {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+        .opciones-grid {
+            display: grid;
+            grid-template-columns: auto minmax(140px, 200px);
+            gap: 10px 18px;
+            align-items: center;
+            justify-content: center;
+        }
+        .botones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #2ecc71;
+            color: #10131f;
+        }
+        button.secundario {
+            background: #3d4560;
+            color: #fff;
+        }
+        button.peligro {
+            background: #c0392b;
+            color: #fff;
+        }
+        button:hover:not(:disabled) {
+            filter: brightness(1.1);
+        }
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .error {
+            color: #ff7675;
+            font-size: 14px;
+            min-height: 18px;
+            margin: 0;
+        }
+        .aviso {
+            color: #2ecc71;
+            font-size: 14px;
+            min-height: 18px;
+            margin: 0;
+        }
+        .conexion {
+            font-size: 13px;
+            color: #aaa;
+            margin: 0;
+        }
+        /* Lista de salas abiertas */
+        #listaSalas {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        #listaSalas li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            background: #10131f;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+        #listaSalas li button {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .codigo-grande {
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: 10px;
+            color: #feca57;
+            margin: 0;
+        }
+        .girando {
+            display: inline-block;
+            animation: girar 1.2s linear infinite;
+        }
+        @keyframes girar {
+            to { transform: rotate(360deg); }
+        }
+        .resultado {
+            font-size: 20px;
+            margin: 0;
+        }
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        th, td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #3d4560;
+            white-space: nowrap;
+        }
+        th {
+            color: #2ecc71;
+        }
+        tr.actual td {
+            color: #feca57;
+            font-weight: bold;
+        }
+
+        /* Celular */
+        @media (max-width: 600px) {
+            .columnas {
+                grid-template-columns: 1fr;
+            }
+            .barra {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .barra .acciones {
+                justify-content: center;
+            }
+            .solo-escritorio {
+                display: none;
+            }
+        }
+        /* Pantallas táctiles: sin ayuda de teclado */
+        .solo-vertical {
+            display: none;
+        }
+        @media (pointer: coarse) {
+            .solo-escritorio {
+                display: none;
+            }
+        }
+        @media (pointer: coarse) and (orientation: portrait) {
+            .solo-vertical {
+                display: inline;
+            }
+        }
+        /* Celular acostado: aprovechar todo el alto para el tablero */
+        @media (max-height: 500px) {
+            h2 {
+                display: none;
+            }
+            .tablero,
+            .barra {
+                width: min(800px, 100%, calc((100dvh - 80px) * 16 / 9));
+            }
+            .barra {
+                flex-direction: row;
+            }
+            .barra p {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>🏓 Pong 1 vs 1</h2>
+
+    <div class="tablero">
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
+    </div>
+
+    <div class="barra">
+        <p>
+            <span class="solo-escritorio">Teclas: <span id="textoControles"></span> · </span>
+            📱 Arrastra el dedo o haz clic sobre el tablero<span class="solo-vertical"> · 🔄 Gira el celular para verlo más grande</span>
+            <span id="avisoJuego"></span>
+        </p>
+        <div class="acciones">
+            <button type="button" id="btnPausa" class="secundario" disabled>⏸ Pausa</button>
+            <button type="button" id="btnPantallaCompleta" class="secundario">⛶</button>
+        </div>
+    </div>
+
+    <!-- Lobby: crear una sala o unirse a una -->
+    <div id="pantallaLobby" class="pantalla">
+        <div class="caja">
+            <h3>🏓 Pong 1 vs 1</h3>
+            <p id="estadoConexion" class="conexion">⏳ Conectando…</p>
+
+            <div>
+                <label for="nombreJugador">Tu nombre</label>
+                <input type="text" id="nombreJugador" maxlength="15" autocomplete="off" placeholder="Escribe tu nombre">
+            </div>
+
+            <div class="columnas">
+                <form id="formCrear" class="tarjeta" novalidate>
+                    <h4>Crear sala</h4>
+                    <label for="dificultad">Dificultad</label>
+                    <select id="dificultad">
+                        <option value="facil">Fácil</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="dificil">Difícil</option>
+                    </select>
+                    <label for="puntosGanar">Puntos para ganar</label>
+                    <select id="puntosGanar">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="7">7</option>
+                    </select>
+                    <button type="submit" class="requiere-conexion">Crear sala</button>
+                </form>
+
+                <div class="tarjeta">
+                    <h4>Unirse</h4>
+                    <form id="formUnirse" novalidate>
+                        <label for="codigoUnirse">Código de la sala</label>
+                        <input type="text" id="codigoUnirse" maxlength="4" autocomplete="off" placeholder="ABCD">
+                        <button type="submit" class="requiere-conexion" style="width: 100%; margin-top: 8px;">Unirse</button>
+                    </form>
+                    <label>Salas abiertas</label>
+                    <ul id="listaSalas"></ul>
+                </div>
+            </div>
+
+            <p id="errorLobby" class="error"></p>
+            <div class="botones">
+                <button type="button" id="btnOpcionesLobby" class="secundario">⚙ Opciones</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Esperando a que se una el rival -->
+    <div id="pantallaEspera" class="pantalla oculto">
+        <div class="caja">
+            <h3>Sala creada</h3>
+            <p>Comparte este código con tu rival:</p>
+            <p id="codigoSala" class="codigo-grande"></p>
+            <p id="detalleSala" class="conexion"></p>
+            <div class="botones">
+                <button type="button" id="btnCopiar" class="secundario">📋 Copiar enlace</button>
+                <button type="button" id="btnCompartir" class="secundario oculto">📤 Compartir</button>
+            </div>
+            <p id="avisoEspera" class="aviso"></p>
+            <p><span class="girando">⏳</span> Esperando rival… la partida empieza en cuanto se una.</p>
+            <div class="botones">
+                <button type="button" id="btnCancelarSala" class="peligro">Cancelar sala</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pausa -->
+    <div id="pantallaPausa" class="pantalla oculto">
+        <div class="caja">
+            <h3>⏸ Pausa</h3>
+            <p id="textoPausa"></p>
+            <div class="botones">
+                <button type="button" id="btnContinuar">▶ Continuar</button>
+                <button type="button" id="btnOpcionesPausa" class="secundario">⚙ Opciones</button>
+                <button type="button" id="btnAbandonar" class="peligro">Abandonar</button>
+            </div>
+            <p class="conexion solo-escritorio">Pulsa <kbd>P</kbd> o <kbd>Esc</kbd> para continuar</p>
+        </div>
+    </div>
+
+    <!-- Opciones (personalización local, se guarda en este navegador) -->
+    <div id="pantallaOpciones" class="pantalla oculto">
+        <div class="caja">
+            <h3>⚙ Opciones</h3>
+            <div class="opciones-grid">
+                <label for="optTablero">Color del tablero</label>
+                <input type="color" id="optTablero">
+
+                <label for="optPaleta">Color de tu paleta</label>
+                <input type="color" id="optPaleta">
+
+                <label for="optRival">Color del rival</label>
+                <input type="color" id="optRival">
+
+                <label for="optPelota">Color de la pelota</label>
+                <input type="color" id="optPelota">
+
+                <label for="optControles">Teclas</label>
+                <select id="optControles">
+                    <option value="clasico">W / S y Flechas</option>
+                    <option value="ik">I / K</option>
+                </select>
+            </div>
+            <p id="avisoOpciones" class="aviso"></p>
+            <div class="botones">
+                <button type="button" id="btnVolverOpciones">Volver</button>
+                <button type="button" id="btnRestablecer" class="secundario">Restablecer</button>
+                <button type="button" id="btnBorrarHistorial" class="peligro">Borrar historial</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fin de la partida -->
+    <div id="pantallaFin" class="pantalla oculto">
+        <div class="caja">
+            <h3 id="tituloFin"></h3>
+            <p id="resultado" class="resultado"></p>
+            <p>Tus 3 mejores partidas</p>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Jugador</th><th>Rival</th><th>Marcador</th><th>Fecha</th></tr>
+                    </thead>
+                    <tbody id="tablaHistorial"></tbody>
+                </table>
+            </div>
+            <p id="avisoRevancha" class="aviso"></p>
+            <div class="botones">
+                <button type="button" id="btnRevancha">🔁 Revancha</button>
+                <button type="button" id="btnVolverLobby" class="secundario">Volver al lobby</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
